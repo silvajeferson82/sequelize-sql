@@ -7,11 +7,26 @@ module.exports = {
             attributes: ['name', 'email'],
             where:{
                 email:{
-                    [Op.like]: '%@gmail.com'
+                    [Op.iLike]: '%@email.com%'
                 }
             },
-        })  
-        
+            include: [
+                {   association: 'addresses', 
+                    where: { 
+                        street: 'Rua F'
+                    }
+                },
+                { 
+                    association: 'techs', 
+                    required: false,
+                    where: { 
+                        name: {
+                            [Op.iLike]: 'Node%'
+                        }
+                    }
+                }
+            ]
+        });
         return res.json(users);
     }
 }
